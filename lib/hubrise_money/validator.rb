@@ -11,11 +11,15 @@ class HubriseMoney::Validator
       end
     end
 
-    def error_message_for(value, positive: false)
+    def error_message_for(value, positive: false, currency: nil)
       if value
         money = HubriseMoney::Money.from_string(value)
         if positive && money.cents < 0
-          "cannot be below zero"
+          return "cannot be below zero"
+        end
+
+        if currency && money.currency != currency
+          return "'#{money.currency}' is not allowed ('#{currency}' expected)"
         end
       end
   

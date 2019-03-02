@@ -26,10 +26,17 @@ RSpec.describe HubriseMoney::Validator do
     end
 
     it "restricts only positive value" do
-      object = OpenStruct.new(attr1: "-10.00 EUR", errors: {})
-      HubriseMoney::Validator.validate(object, :attr1, positive: true)
+      object = OpenStruct.new(attr1: "-10.00 EUR", attr2: "10.00 EUR", errors: {})
+      HubriseMoney::Validator.validate(object, :attr1, :attr2, positive: true)
 
       expect(object.errors).to eq(attr1: ["cannot be below zero"])
+    end
+
+    it "restricts on currency value" do
+      object = OpenStruct.new(attr1: "10.00 EUR", attr2: "10.00 USD", errors: {})
+      HubriseMoney::Validator.validate(object, :attr1, :attr2, currency: "EUR")
+
+      expect(object.errors).to eq(attr2: ["'USD' is not allowed ('EUR' expected)"])
     end
   end
 end
