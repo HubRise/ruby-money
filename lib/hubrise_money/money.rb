@@ -56,7 +56,7 @@ module HubriseMoney
     end
 
     def self.from_string(str)
-      if m = str.strip.match(/^ ([-+]?) \s* ([0-9]+) (\. ([0-9]+))? \s* (.*)/x)
+      if m = str.strip.match(/^ ([-]?) \s* ([0-9]+) (\. ([0-9]{2}))+ \s+ (\S{3})/x)
         sign, digits, _, cents, cur = m[1..5]
 
         cents << '0' if cents && cents.size == 1
@@ -247,21 +247,6 @@ module HubriseMoney
       end
       new_cents = cents + money.cents
       self.class.new(new_cents, new_currency)
-    end
-
-    # ------------------------------------
-    # Validation
-    # ------------------------------------
-    def self.validate(errors, symbol, value)
-      if value && !valid?(value)
-        errors.add(symbol, I18n.t('activerecord.errors.messages.must_be_money'))
-      end
-    end
-
-    def self.valid?(value, error_log: true)
-      v = value =~ /^-?[0-9]+\.[0-9]{2} (\w{3})$/ && CURRENCIES.include?($1)
-      puts "Invalid monetary value: #{value}\n" + caller * "\n" if !v && error_log
-      !!v
     end
   end
 end
