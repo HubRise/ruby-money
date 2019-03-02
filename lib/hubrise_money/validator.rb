@@ -1,11 +1,12 @@
 class HubriseMoney::Validator
   class << self
-    def validate(record, *fields, **options)
+    def validate(record, *fields, errors: record.errors, **options)
       fields.each do |field|
         value = record.public_send(field)
 
         if error_message = error_message_for(value, **options)
-          record.errors[field] << error_message
+          errors[field] ||= []
+          errors[field] << error_message
         end
       end
     end
