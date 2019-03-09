@@ -26,4 +26,16 @@ RSpec.describe HubriseMoney::Money do
       expect { HubriseMoney::Money.from_string('+ 100.50 EUR') }.to   raise_error(HubriseMoney::Money::Error)
     end
   end
+
+  describe ".country_to_currency" do
+    it "returns currency" do
+      expect(HubriseMoney::Money.country_to_currency("TW")).to eq("TWD")
+    end
+  end
+
+  describe ".currency_to_symbol" do
+    it "returns symbol" do
+      expect(HubriseMoney::Money.currency_to_symbol("TWD")).to eq("$")
+    end
+  end
 end

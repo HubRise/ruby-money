@@ -204,22 +204,11 @@ class HubriseMoney::Money
     self.class.new(new_cents, new_currency)
   end
 
-  class << self
-    def country_to_currency(country_code)
-      COUNTRY_TO_CURRENCY[country_code]
-    end
+  def self.country_to_currency(country_code)
+    COUNTRY_TO_CURRENCY[country_code]
+  end
 
-    def currency_to_symbol(currency_code)
-      CURRENCY_TO_SYMBOL[currency_code]
-    end
-
-    def locale_to_currency(locale)
-      case locale.to_s
-      when 'en-GB'
-        'GBP'
-      else
-        'EUR'
-      end
-    end
+  def self.currency_to_symbol(currency_code)
+    CURRENCY_TO_SYMBOL[currency_code]
   end
 end
