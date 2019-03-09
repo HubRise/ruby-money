@@ -37,7 +37,7 @@ class HubriseMoney::Money
 
       new cents, cur
     else
-      raise(Error, "Could not convert #{str} to Util::Money")
+      raise(Error, "Could not convert #{str} to HubriseMoney::Money")
     end
   end
 
@@ -49,7 +49,7 @@ class HubriseMoney::Money
       other =~ /(\w{3})$/ && currency = $1
       new(0, currency)
     else
-      raise(Error, "Expected a String or Util::Money, got #{other.inspect} (#{other.class})")
+      raise(Error, "Expected a String or HubriseMoney::Money, got #{other.inspect} (#{other.class})")
     end
   end
 
@@ -171,7 +171,7 @@ class HubriseMoney::Money
   end
 
   def - money
-    raise(Error, "Was expecting Money as operand, got #{money.inspect} (#{money.class})") if ! Util::Money === money
+    raise(Error, "Was expecting HubriseMoney::Money as operand, got #{money.inspect} (#{money.class})") if ! HubriseMoney::Money === money
     if currency == money.currency
       new_currency = currency
     else
@@ -188,7 +188,7 @@ class HubriseMoney::Money
   end
 
   def + money
-    raise(Error, "Was expecting Money as operand, got #{money.inspect} (#{money.class})") if ! Util::Money === money
+    raise(Error, "Was expecting Money as operand, got #{money.inspect} (#{money.class})") if ! HubriseMoney::Money === money
     if currency == money.currency
       new_currency = currency
     else
@@ -209,7 +209,7 @@ class HubriseMoney::Money
       COUNTRY_TO_CURRENCY[country_code]
     end
 
-    def iso_to_symbol(currency_code)
+    def currency_to_symbol(currency_code)
       CURRENCY_TO_SYMBOL[currency_code]
     end
 
