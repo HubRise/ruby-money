@@ -19,12 +19,12 @@ class HubriseMoney::Validator
         end
 
         if currency && money.currency != currency
-          return "'#{money.currency}' is not allowed ('#{currency}' expected)"
+          return "must be in '#{currency}' ('#{money.currency}' given)"
         end
       end
   
     rescue HubriseMoney::Money::Error
-      "'#{value}' is not valid monetary value"
+      "must be a valid monetary value ('#{value}' given)"
     end
   end
 end

@@ -14,7 +14,7 @@ RSpec.describe HubriseMoney::Validator do
       object = OpenStruct.new(attr1: "wrong", errors: {})
       HubriseMoney::Validator.validate(object, :attr1)
 
-      expect(object.errors).to eq(attr1: ["'wrong' is not valid monetary value"])
+      expect(object.errors).to eq(attr1: ["must be a valid monetary value ('wrong' given)"])
     end
 
     it "assigns a error to custom holder" do
@@ -22,7 +22,7 @@ RSpec.describe HubriseMoney::Validator do
       errors = {}
       HubriseMoney::Validator.validate(object, :attr1, errors: errors)
 
-      expect(errors).to eq(attr1: ["'wrong' is not valid monetary value"])
+      expect(errors).to eq(attr1: ["must be a valid monetary value ('wrong' given)"])
     end
 
     it "restricts only positive value" do
@@ -36,7 +36,7 @@ RSpec.describe HubriseMoney::Validator do
       object = OpenStruct.new(attr1: "10.00 EUR", attr2: "10.00 USD", errors: {})
       HubriseMoney::Validator.validate(object, :attr1, :attr2, currency: "EUR")
 
-      expect(object.errors).to eq(attr2: ["'USD' is not allowed ('EUR' expected)"])
+      expect(object.errors).to eq(attr2: ["must be in 'EUR' ('USD' given)"])
     end
   end
 end
