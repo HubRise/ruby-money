@@ -1,4 +1,5 @@
 require "hubrise_money/money/currency_data"
+require "bigdecimal"
 
 class HubriseMoney::Money
   include HubriseMoney::Money::CurrencyData
@@ -21,8 +22,8 @@ class HubriseMoney::Money
   # Several ways to create Money objects
   # ------------------------------------
   def initialize(a, c = 'EUR')
-    raise(Error, "Was expecting a Fixnum as cents, got #{a.inspect} (#{a.class})") if ! (Fixnum === a || Bignum === a)
-    raise(Error, "Unknown currency #{c}") if ! CURRENCIES.include?(c)
+    raise(Error, "Was expecting an Integer as cents, got #{a.inspect} (#{a.class})") unless a.is_a?(Integer)
+    raise(Error, "Unknown currency #{c}") unless CURRENCIES.include?(c)
     @cents, @currency = a, c
   end
 
@@ -128,9 +129,10 @@ class HubriseMoney::Money
   # Arithmetic operators
   # ----------------------
   def * other
-    if ! [Fixnum, BigDecimal, Float].include?(other.class)
+    unless other.is_a?(Numeric)
       raise(Error, "Cannot multiply by #{other.inspect} (#{other.class})")
     end
+
     if other === Float
       self.class.new((cents * other).round, currency)
     else
@@ -139,9 +141,10 @@ class HubriseMoney::Money
   end
 
   def / other
-    if ! [Fixnum, BigDecimal, Float].include?(other.class)
-      "Cannot divide by #{other.inspect} (#{other.class})"
+    unless other.is_a?(Numeric)
+      raise(Error, "Cannot divide by #{other.inspect} (#{other.class})")
     end
+
     if other === Float
       self.class.new((cents / other).round, currency)
     else
@@ -152,7 +155,10 @@ class HubriseMoney::Money
   # Division with options:
   #  - :round_up -> makes split cent round up to upper cent instead of lower by default
   def div(other, options = {})
-    raise(Error, "Was expecting Fixnum or BigDecimal as divider, got #{other.inspect} (#{other.class})") if ! (Fixnum === other || BigDecimal === other)
+    unless other.is_a?(Numeric)
+      raise(Error, "Was expecting Numeric as divider, got #{other.inspect} (#{other.class})")
+    end
+
     _cents = (cents / other).to_i
     _cents += 1 if options[:round_up] && (_cents * other).to_i < cents
     self.class.new(_cents, currency)
@@ -161,7 +167,10 @@ class HubriseMoney::Money
   # Applies a percentage to the price
   # For instance : 3.00 EUR % 90 -> 2.70 EUR
   def % percent
-    raise(Error, "Was expecting Fixnum or BigDecimal as operand of %, got #{percent.inspect} (#{percent.class})") if ! (Fixnum === percent || BigDecimal === percent)
+    unless percent.is_a?(Numeric)
+      raise(Error, "Was expecting Numeric as operand of %, got #{percent.inspect} (#{percent.class})")
+    end
+
     percent_decimal = BigDecimal === percent ? percent : BigDecimal.new(percent.to_s)
     self.class.new((cents * (percent_decimal / 100)).round.to_i, currency)
   end
@@ -171,7 +180,7 @@ class HubriseMoney::Money
   end
 
   def - money
-    raise(Error, "Was expecting HubriseMoney::Money as operand, got #{money.inspect} (#{money.class})") if ! HubriseMoney::Money === money
+    raise(Error, "Was expecting HubriseMoney::Money as operand, got #{money.inspect} (#{money.class})") unless HubriseMoney::Money === money
     if currency == money.currency
       new_currency = currency
     else
@@ -188,7 +197,7 @@ class HubriseMoney::Money
   end
 
   def + money
-    raise(Error, "Was expecting Money as operand, got #{money.inspect} (#{money.class})") if ! HubriseMoney::Money === money
+    raise(Error, "Was expecting Money as operand, got #{money.inspect} (#{money.class})") unless HubriseMoney::Money === money
     if currency == money.currency
       new_currency = currency
     else
