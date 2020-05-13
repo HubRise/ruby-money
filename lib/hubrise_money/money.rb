@@ -28,7 +28,7 @@ class HubriseMoney::Money
   end
 
   def self.from_string(str)
-    if m = str.strip.match(/^ ([-]?) \s* ([0-9]+) (\. ([0-9]{2}))+ \s+ (\S{3})/x)
+    if m = str.strip.match(regexp)
       sign, digits, _, cents, cur = m[1..5]
 
       cents << '0' if cents && cents.size == 1
@@ -52,6 +52,11 @@ class HubriseMoney::Money
     else
       raise(Error, "Expected a String or HubriseMoney::Money, got #{other.inspect} (#{other.class})")
     end
+  end
+
+  def self.regexp(positive_only: false)
+    sign_regexp = positive_only ? '' : '([-]?)'
+    /^ #{sign_regexp} \s* ([0-9]+) (\. ([0-9]{2}))+ \s+ (\S{3}) /x
   end
 
   # --------------------
