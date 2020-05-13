@@ -56,7 +56,7 @@ class HubriseMoney::Money
 
   def self.regexp(positive_only: false)
     sign_regexp = positive_only ? '' : '([-]?)'
-    /^ #{sign_regexp} \s* ([0-9]+) (\. ([0-9]{2}))+ \s+ (\S{3}) /x
+    /^ #{sign_regexp} \s* ([0-9]+) (\. ([0-9]{2}))+ \s+ (\S{3}) \z/x
   end
 
   # --------------------

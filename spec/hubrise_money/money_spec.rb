@@ -19,11 +19,18 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it 'should fail' do
-      expect { HubriseMoney::Money.from_string('100') }.to            raise_error(HubriseMoney::Money::Error)
-      expect { HubriseMoney::Money.from_string('100 EUR') }.to        raise_error(HubriseMoney::Money::Error)
-      expect { HubriseMoney::Money.from_string('100.5 EUR') }.to      raise_error(HubriseMoney::Money::Error)
-      expect { HubriseMoney::Money.from_string('100.100 EUR') }.to    raise_error(HubriseMoney::Money::Error)
-      expect { HubriseMoney::Money.from_string('+ 100.50 EUR') }.to   raise_error(HubriseMoney::Money::Error)
+      aggregate_failures do
+        [
+          '100',
+          '100 EUR',
+          '100.5 EUR',
+          '100.100 EUR',
+          '100.10 EURO',
+          '+ 100.50 EUR',
+        ].each do |invalid_money_string|
+          expect { HubriseMoney::Money.from_string(invalid_money_string) }.to raise_error(HubriseMoney::Money::Error), invalid_money_string
+        end
+      end
     end
   end
 
