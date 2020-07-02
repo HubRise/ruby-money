@@ -21,10 +21,16 @@ class HubriseMoney::Money
   # ------------------------------------
   # Several ways to create Money objects
   # ------------------------------------
-  def initialize(a, c = 'EUR')
-    raise(Error, "Was expecting an Integer as cents, got #{a.inspect} (#{a.class})") unless a.is_a?(Integer)
-    raise(Error, "Unknown currency #{c}") unless CURRENCIES.include?(c)
-    @cents, @currency = a, c
+  def initialize(cents, currency = nil)
+    raise(Error, "Was expecting an Integer as cents, got #{cents.inspect} (#{cents.class})") unless cents.is_a?(Integer)
+
+    if !currency
+      puts "Calling the constructor without an explicit currency is deprecated. Defaulting to EUR for backwards compatibility."
+      currency = "EUR"
+    end
+    raise(Error, "Unknown currency #{currency}") unless CURRENCIES.include?(currency)
+
+    @cents, @currency = cents, currency
   end
 
   def self.from_string(str)
