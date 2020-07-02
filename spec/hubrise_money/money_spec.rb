@@ -34,6 +34,16 @@ RSpec.describe HubriseMoney::Money do
     end
   end
 
+  describe "printing" do
+    it 'prints' do
+      expect(HubriseMoney::Money.new(-123, "EUR").to_s).to eq("-1.23 EUR")
+    end
+
+    it 'converts to BigDecimal' do
+      expect(HubriseMoney::Money.new(-123, "EUR").to_big_decimal).to eq(BigDecimal("-1.23"))
+    end
+  end
+
   describe ".country_to_currency" do
     it "returns currency" do
       expect(HubriseMoney::Money.country_to_currency("TW")).to eq("TWD")
@@ -51,6 +61,10 @@ RSpec.describe HubriseMoney::Money do
       expect(HubriseMoney::Money.new(100).to_s).to eq("1.00 EUR")
     end
 
+    it "builds an object with a warning when the currency is not specified" do
+      expect { HubriseMoney::Money.new(100).to_s }.to output.to_stdout
+    end
+
     it "fails with wrong type" do
       expect{ HubriseMoney::Money.new("100") }.to raise_error(HubriseMoney::Money::Error)
     end
@@ -58,56 +72,56 @@ RSpec.describe HubriseMoney::Money do
 
   describe "#*" do
     it "multiplies" do
-      new_money = HubriseMoney::Money.new(100) * 2
+      new_money = HubriseMoney::Money.new(100, "EUR") * 2
       expect(new_money.to_s).to eq("2.00 EUR")
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100) * "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect{ HubriseMoney::Money.new(100, "EUR") * "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
   describe "#/" do
     it "divides" do
-      new_money = HubriseMoney::Money.new(100) / 2
+      new_money = HubriseMoney::Money.new(100, "EUR") / 2
       expect(new_money.to_s).to eq("0.50 EUR")
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100) / "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect{ HubriseMoney::Money.new(100, "EUR") / "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
   describe "#div" do
     it "divides" do
-      new_money = HubriseMoney::Money.new(100).div(2)
+      new_money = HubriseMoney::Money.new(100, "EUR").div(2)
       expect(new_money.to_s).to eq("0.50 EUR")
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100).div("2") }.to raise_error(HubriseMoney::Money::Error)
+      expect{ HubriseMoney::Money.new(100, "EUR").div("2") }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
   describe "#%" do
     it "returns a percentage" do
-      new_money = HubriseMoney::Money.new(100) % 2
+      new_money = HubriseMoney::Money.new(100, "EUR") % 2
       expect(new_money.to_s).to eq("0.02 EUR")
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100) % "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect{ HubriseMoney::Money.new(100, "EUR") % "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
   describe "#-" do
     it "returns a difference" do
-      new_money = HubriseMoney::Money.new(100) - HubriseMoney::Money.new(40)
+      new_money = HubriseMoney::Money.new(100, "EUR") - HubriseMoney::Money.new(40, "EUR")
       expect(new_money.to_s).to eq("0.60 EUR")
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100) - "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect{ HubriseMoney::Money.new(100, "EUR") - "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 end

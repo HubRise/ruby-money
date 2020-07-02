@@ -81,18 +81,23 @@ class HubriseMoney::Money
   # ---------------------
   # Printing methods
   # ---------------------
-  # Returns something like "-10.40 EUR"
+  # Example result: "-10.40 EUR"
   def to_s
     "#{to_s_no_currency} #{currency}"
   end
 
-  # Return something like "-10.40" (for -10.40 EUR)
+  # Example result: "-10.40" (for -10.40 EUR)
   def to_s_no_currency
     if cents >= 0
       "#{cents / 100}.#{'%02d' % (cents % 100)}"
     else
       "-#{(-cents) / 100}.#{'%02d' % ((-cents) % 100)}"
     end
+  end
+
+  # Example result: -10.40 (as a BigDecimal)
+  def to_big_decimal
+    BigDecimal(to_s_no_currency)
   end
 
   # Return something like "10.40 €", "-$3.50", ...
