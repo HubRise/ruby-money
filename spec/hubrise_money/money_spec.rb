@@ -40,7 +40,11 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it 'converts to BigDecimal' do
-      expect(HubriseMoney::Money.new(-123, "EUR").to_big_decimal).to eq(BigDecimal("-1.23"))
+      expect(HubriseMoney::Money.new(-123, "EUR").to_d).to eq(BigDecimal("-1.23"))
+    end
+
+    it 'converts to float' do
+      expect(HubriseMoney::Money.new(-123, "EUR").to_f).to be_within(0.001).of(-1.23)
     end
   end
 

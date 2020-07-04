@@ -96,8 +96,14 @@ class HubriseMoney::Money
   end
 
   # Example result: -10.40 (as a BigDecimal)
-  def to_big_decimal
+  def to_d
     BigDecimal(to_s_no_currency)
+  end
+
+  # This method is useful to encode a numeric value in JSON, eg: `amount_m.to_f.to_json`
+  # Example result: -10.4 (as a float)
+  def to_f
+    to_s_no_currency.to_f
   end
 
   # Return something like "10.40 €", "-$3.50", ...
