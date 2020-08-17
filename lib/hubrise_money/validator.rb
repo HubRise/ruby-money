@@ -15,7 +15,7 @@ class HubriseMoney::Validator
       if value
         money = HubriseMoney::Money.from_string(value)
         if positive && money.cents < 0
-          return "cannot be below zero"
+          return "must be positive ('#{value}' given)"
         end
 
         if currency && money.currency != currency
