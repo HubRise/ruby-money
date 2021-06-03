@@ -5,8 +5,12 @@ class HubriseMoney::Validator
         value = record.public_send(field)
 
         if error_message = error_message_for(value, **options)
-          errors[field] ||= []
-          errors[field] << error_message
+          if(errors.respond_to?(:add))
+            errors.add(field, error_message)
+          else
+            errors[field] ||= []
+            errors[field] << error_message
+          end
         end
       end
     end
