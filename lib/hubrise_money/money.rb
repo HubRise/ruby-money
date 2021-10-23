@@ -193,7 +193,7 @@ class HubriseMoney::Money
       raise(Error, "Was expecting Numeric as operand of %, got #{percent.inspect} (#{percent.class})")
     end
 
-    percent_decimal = BigDecimal === percent ? percent : BigDecimal.new(percent.to_s)
+    percent_decimal = BigDecimal === percent ? percent : BigDecimal(percent.to_s)
     self.class.new((cents * (percent_decimal / 100)).round.to_i, currency)
   end
 
