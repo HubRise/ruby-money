@@ -14,8 +14,12 @@ class HubriseMoney::Money
     cents == 0
   end
 
+  def present?
+    !zero?
+  end
+
   def presence
-    zero? ? nil : self
+    present? ? self : nil
   end
 
   # ------------------------------------

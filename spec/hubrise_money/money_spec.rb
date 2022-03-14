@@ -2,19 +2,19 @@ RSpec.describe HubriseMoney::Money do
   describe '.from_string' do
     it 'parses the value' do
       value_m = HubriseMoney::Money.from_string('100.50 EUR')
-      expect(value_m.cents).to    eq(10050)
+      expect(value_m.cents).to eq(10050)
       expect(value_m.currency).to eq('EUR')
     end
 
     it 'parses the value' do
       value_m = HubriseMoney::Money.from_string('100.00 EUR')
-      expect(value_m.cents).to    eq(10000)
+      expect(value_m.cents).to eq(10000)
       expect(value_m.currency).to eq('EUR')
     end
 
     it 'parses negative value' do
       value_m = HubriseMoney::Money.from_string('-100.00 EUR')
-      expect(value_m.cents).to    eq(-10000)
+      expect(value_m.cents).to eq(-10000)
       expect(value_m.currency).to eq('EUR')
     end
 
@@ -70,7 +70,7 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new("100") }.to raise_error(HubriseMoney::Money::Error)
+      expect { HubriseMoney::Money.new("100") }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
@@ -81,7 +81,7 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100, "EUR") * "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect { HubriseMoney::Money.new(100, "EUR") * "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
@@ -92,7 +92,7 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100, "EUR") / "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect { HubriseMoney::Money.new(100, "EUR") / "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
@@ -103,7 +103,7 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100, "EUR").div("2") }.to raise_error(HubriseMoney::Money::Error)
+      expect { HubriseMoney::Money.new(100, "EUR").div("2") }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
@@ -114,7 +114,7 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100, "EUR") % "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect { HubriseMoney::Money.new(100, "EUR") % "2" }.to raise_error(HubriseMoney::Money::Error)
     end
   end
 
@@ -125,7 +125,28 @@ RSpec.describe HubriseMoney::Money do
     end
 
     it "fails with wrong type" do
-      expect{ HubriseMoney::Money.new(100, "EUR") - "2" }.to raise_error(HubriseMoney::Money::Error)
+      expect { HubriseMoney::Money.new(100, "EUR") - "2" }.to raise_error(HubriseMoney::Money::Error)
+    end
+  end
+
+  describe "#presence" do
+    it "returns nil on zero money" do
+      expect(HubriseMoney::Money.new(0, "EUR").presence).to be_nil
+    end
+
+    it "returns self on non-zero money" do
+      money = HubriseMoney::Money.new(100, "EUR")
+      expect(money.presence).to eq(money)
+    end
+  end
+
+  describe "#present?" do
+    it "is not present on zero money" do
+      expect(HubriseMoney::Money.new(0, "EUR")).to_not be_present
+    end
+
+    it "is present on non-zero money" do
+      expect(HubriseMoney::Money.new(100, "EUR")).to be_present
     end
   end
 end
