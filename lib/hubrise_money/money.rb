@@ -21,6 +21,14 @@ class HubriseMoney::Money
   def presence
     present? ? self : nil
   end
+  
+  def positive?
+    cents >= 0
+  end
+  
+  def negative?
+    !positive?
+  end
 
   # ------------------------------------
   # Several ways to create Money objects

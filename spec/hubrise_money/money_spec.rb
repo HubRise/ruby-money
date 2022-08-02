@@ -149,4 +149,16 @@ RSpec.describe HubriseMoney::Money do
       expect(HubriseMoney::Money.new(100, "EUR")).to be_present
     end
   end
+
+  describe "sign accessors" do
+    it "is positive on positive money" do
+      expect(HubriseMoney::Money.new(100, "EUR").positive?).to be_truthy
+      expect(HubriseMoney::Money.new(-100, "EUR").positive?).to be_falsey
+    end
+
+    it "is negative on negative money" do
+      expect(HubriseMoney::Money.new(100, "EUR").negative?).to be_falsey
+      expect(HubriseMoney::Money.new(-100, "EUR").negative?).to be_truthy
+    end
+  end
 end
