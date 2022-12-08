@@ -1,4 +1,5 @@
-RSpec.describe HubriseMoney::Accessors do
+# frozen_string_literal: true
+RSpec.describe(HubriseMoney::Accessors) do
   describe ".money_accessor" do
     subject do
       Struct.new(:attr1, :attr2) do

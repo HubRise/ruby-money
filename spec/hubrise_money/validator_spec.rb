@@ -1,6 +1,7 @@
-require 'ostruct'
+# frozen_string_literal: true
+require "ostruct"
 
-RSpec.describe HubriseMoney::Validator do
+RSpec.describe(HubriseMoney::Validator) do
   let(:object) { Struct.new(:attr1, :errors) }
   describe ".validate" do
     it "does not assign a error if valid" do
