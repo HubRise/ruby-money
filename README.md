@@ -21,9 +21,9 @@ The gem is not published to RubyGems.org. Consumer apps should use the gem direc
 
 ```bash
 bundle install
-VERSION=1.0.2
+VERSION=1.0.3
 git add Gemfile.lock
-git add lib/ruby-money/version.rb
+git add lib/hubrise_money/version.rb
 git commit -m "Version $VERSION"
 git tag v$VERSION
 git push --tags
