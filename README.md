@@ -11,13 +11,14 @@ docker run hubrise/ruby-money-spec
 
 ## Publish changes to this gem
 
-To upload the latest version to RubyGems.org:
+The gem is not published to RubyGems.org. Consumer apps should use the gem directly from GitHub, ie: `gem "hubrise_money", git: "https://github.com/HubRise/ruby-money.git", tag: "v1.0.2"`.
 
-0. Make sure all local changes are committed.
+1. Make sure all local changes are committed.
 
-1. Increase version in `lib/ruby-money/version.rb`
+2. Increase version in `lib/ruby-money/version.rb`
 
-2. Tag the repository:
+3. Tag the repository:
+
 ```bash
 bundle install
 VERSION=1.0.2
@@ -29,6 +30,4 @@ git push --tags
 git push
 ```
 
-3. Increase the version of the gem in the consumer app's `Gemfile`.
-
-The gem is not published to RubyGems.org, but it is available via GitHub.
+4. Increase the version in the consumer app's `Gemfile`.
