@@ -20,9 +20,7 @@ The gem is not published to RubyGems.org. Consumer apps should use the gem direc
 3. Tag the repository:
 
 ```bash
-bundle install
-VERSION=1.0.3
-git add Gemfile.lock
+VERSION=1.0.5
 git add lib/hubrise_money/version.rb
 git commit -m "Version $VERSION"
 git tag v$VERSION
