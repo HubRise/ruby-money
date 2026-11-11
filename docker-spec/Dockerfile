@@ -1,4 +1,4 @@
-FROM ruby:2.7.7-bullseye
+FROM ruby:3.4.12-bookworm
 
 # -------------
 # Working directory
